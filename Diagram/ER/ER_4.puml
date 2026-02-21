@@ -1,0 +1,223 @@
+@startuml ER-4
+
+!theme plain
+hide circle
+skinparam linetype ortho
+skinparam defaultFontName "Tahoma"
+
+' --- 1. Users Entities ---
+
+entity "Student (นักศึกษา)" as student {
+  *student_id : VARCHAR(PK)
+  --
+  kkumail : VARCHAR
+  password : VARCHAR
+  first_name : VARCHAR
+  last_name : VARCHAR
+  major : VARCHAR
+  program : VARCHAR
+  birth_date : DATE
+  age_year : INT
+  '-- ข้อมูลส่วนตัว --
+  ethnicity : VARCHAR
+  nationality : VARCHAR 
+  religion : VARCHAR 
+  phone : VARCHAR
+  address : VARCHAR
+  current_address : VARCHAR
+  email : VARCHAR
+  ' -- ข้อมูลผู้ปกครอง (พ่อ) --
+  f_name : VARCHAR
+  f_occupation : VARCHAR
+  f_workplace : VARCHAR
+  f_address : VARCHAR
+  f_phone : VARCHAR
+  ' -- ข้อมูลผู้ปกครอง (แม่) --
+  m_name : VARCHAR
+  m_occupation : VARCHAR
+  m_workplace : VARCHAR
+  m_address : VARCHAR
+  m_phone : VARCHAR
+  --
+  (แก้ไขข้อมูลส่วนตัว / ยื่นคำร้อง)
+}
+
+entity "Teacher (อาจารย์)" as teacher {
+  *teacher_id : VARCHAR(PK)
+  --
+  name : VARCHAR
+  department : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  --
+  (ติดตาม นศ. / ประเมินผล)
+}
+
+entity "Staff (เจ้าหน้าที่)" as staff {
+  *staff_id : VARCHAR(PK)
+  --
+  name : VARCHAR
+  position : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  --
+  (จัดการระบบ / อนุมัติ / ลงข่าว / ลงแบบฟอร์ม)
+}
+
+entity "Company (สถานประกอบการ)" as company {
+  *company_id : INT(PK)
+  --
+  name : VARCHAR
+  address : TEXT
+  contact_person : VARCHAR
+  phone : VARCHAR
+  email : VARCHAR (Username)
+  password : VARCHAR (Added for Login)
+  is_verified : BOOLEAN
+  created_by_student_id : VARCHAR(FK)
+  --
+  (ต้อง Login เพื่อเข้ามาประเมินผลได้)
+}
+
+' --- 2. Information & Resources ---
+
+entity "Announcement (ข่าวประชาสัมพันธ์)" as news {
+  *news_id : INT(PK)
+  --
+  title : VARCHAR
+  content : TEXT
+  attachment_url : VARCHAR
+  created_at : DATETIME
+  created_by_staff_id : VARCHAR(FK)
+  created_by_teacher_id : VARCHAR(FK)
+}
+
+entity "SystemTemplate (เอกสารดาวน์โหลด/แบบฟอร์ม)" as template {
+  *template_id : INT(PK)
+  --
+  title : VARCHAR
+  description : TEXT
+  file_url : VARCHAR
+  category : ENUM (Form, Manual, Regulation)
+  uploaded_at : DATETIME
+  uploaded_by_staff_id : VARCHAR(FK)
+  --
+  note : "หน้า Download: แบบฟอร์มเปล่า/คู่มือ"
+}
+
+' --- 3. Core Process (Internship Flow) ---
+
+entity "Internship (ข้อมูลการฝึกงาน)" as internship {
+  *internship_id : INT(PK)
+  --
+  *student_id : VARCHAR(FK)
+  *company_id : INT(FK)
+  *advisor_id : VARCHAR(FK)
+  --
+  semester : VARCHAR
+  academic_year : VARCHAR
+  start_date : DATE
+  end_date : DATE
+  --
+  status : ENUM 
+  (Requesting, ModificationNeeded, 
+  Approved, Training, Finished)
+}
+
+' --- ส่วนที่เพิ่มเข้ามาตามรูปภาพแบบฟอร์ม ---
+entity "ApplicationFormDetail (รายละเอียดใบคำร้อง/ทักษะ)" as app_detail {
+  *form_detail_id : INT(PK)
+  --
+  *internship_id : INT(FK)
+  --
+  ' ข้อมูลความสนใจและทักษะ (จากรูปส่วนล่าง)
+  interested_field : VARCHAR (เข้าฝึกงานทางด้าน)
+  special_skills : TEXT (ความสามารถพิเศษ)
+  computer_skills : TEXT (ความสามารถคอมพิวเตอร์)
+  activities_awards : TEXT (กิจกรรม/รางวัล)
+  career_interests : TEXT (ลักษณะงานที่สนใจ)
+  --
+  note : "เก็บข้อมูล Skill/Interest จากแบบฟอร์ม"
+}
+
+entity "InternshipDocument (เอกสารที่ยื่น/ส่งตัว)" as doc {
+  *doc_id : INT(PK)
+  --
+  *internship_id : INT(FK)
+  uploaded_by_role : ENUM(Student, Staff)
+  uploaded_by_id : VARCHAR
+  --
+  doc_type : ENUM 
+  (Resume, Transcript, ParentConsent, 
+  RequestForm, OfficialLetter, FinalReport)
+  file_path : VARCHAR
+  uploaded_at : DATETIME
+  status : ENUM (Pending, Approved, Rejected)
+  --
+  note : "ช่องยื่นเอกสาร: ไฟล์ที่กรอกแล้ว/หนังสือส่งตัว"
+}
+
+entity "DailyLog (บันทึกการฝึกงาน)" as log {
+  *log_id : INT(PK)
+  --
+  *internship_id : INT(FK)
+  date : DATE
+  activity_description : TEXT
+  problem_found : TEXT
+  solution : TEXT
+  created_at : DATETIME
+  status : ENUM (Draft, Submitted)
+  --
+  note : "Channel 2 Process"
+}
+
+entity "Comment (ความคิดเห็น/แจ้งแก้ไข)" as comment {
+  *comment_id : INT(PK)
+  --
+  *internship_id : INT(FK)
+  *commenter_id : VARCHAR
+  commenter_role : ENUM(Staff, Teacher)
+  --
+  message : TEXT
+  created_at : DATETIME
+  related_doc_id : INT(FK)
+  --
+  note : "Feedback Loop"
+}
+
+entity "Evaluation (การประเมินผล)" as eval {
+  *eval_id : INT(PK)
+  --
+  *internship_id : INT(FK)
+  evaluator_type : ENUM(Company, Teacher, Staff)
+  evaluator_id : VARCHAR
+  --
+  score : INT
+  result : ENUM(Pass, Fail)
+  feedback : TEXT
+  evaluated_at : DATETIME
+  --
+  note : "สถานประกอบการ/อ. ประเมินที่นี่"
+}
+
+' --- Relationships ---
+
+' User Actions
+student ||..o{ internship : "1. สร้างคำร้อง"
+student ||..o{ company : "1.3 เพิ่มข้อมูลบริษัท"
+staff ||..o{ news : "1.5 ลงข่าว"
+staff ||..o{ template : "จัดการหน้า Download"
+teacher ||...o{ news : "1.4 ลงข่าว"
+
+' Internship Process Connections
+company ||..o{ internship : "รับนักศึกษา"
+teacher ||..o{ internship : "ที่ปรึกษา"
+staff ||..o{ internship : "ดูแลระบบ"
+
+internship ||..|| app_detail : "มีรายละเอียดทักษะ (1:1)"
+internship ||..o{ doc : "1.5, 1.6 เอกสารแนบ"
+internship ||..o{ log : "บันทึกงาน"
+internship ||..o{ comment : "คอมเมนต์"
+internship ||..o{ eval : "ผลประเมิน"
+
+@enduml
