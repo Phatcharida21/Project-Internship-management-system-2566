@@ -1,0 +1,89 @@
+@startuml UseCaseDiagram_Seller1
+skinparam defaultFontName "Tahoma"
+title "Use Case Diagram: ระบบนำเข้าสินค้าไอที - นักศึกษา"
+
+left to right direction
+
+actor "นักศึกษา" as Student
+actor "เจ้าหน้าที่ฝ่ายงานบริการฯ" as Staff
+actor "อาจารย์ที่ปรึกษา" as Advisor
+actor "สถานประกอบการ" as Company
+actor "เจ้าหน้าที่ดูแลระบบ" as Admin
+
+rectangle "ระบบการจัดการการฝึกงาน" {
+  ' กลุ่มนักศึกษา (Student)
+    usecase "แก้ไขข้อมูลส่วนตัว ประวัติการศึกษา และข้อมูลติดต่อ" as ucs001
+    usecase "ค้นหาข้อมูลสถานประกอบการในระบบ" as ucs002
+    usecase "แจ้งความประสงค์" as ucs003
+    usecase "อัปโหลดเอกสาร" as ucs004
+    usecase "ดาวน์โหลดเอกสารที่ระบบออกให้" as ucs005
+    usecase "ตรวจสอบสถานะการยื่นเรื่องของตนเอง" as ucs006
+    usecase "รับ-ส่งความคิดเห็นกับเจ้าหน้าที่หรืออาจารย์ที่ปรึกษา" as ucs007
+    usecase "สร้างลิงค์หรือคิวอาร์โค้ดเพื่อให้สถานประกอบการประเมิน" as ucs008
+    usecase "อัปโหลดไฟล์ประเมินที่มีลายเซ็นและตราประทับ (กรณีใช้การประเมินแบบกระดาษ/Hybrid)" as ucs009
+
+
+  ' กลุ่มเจ้าหน้าที่ (Staff)
+    usecase "ตรวจสอบ พิจารณา อนุมัติ หรือส่งกลับให้แก้ไข" as ucsf001
+    usecase "อัปโหลดเอกสารทางการและเอกสารของนักศึกษา" as ucsf002
+    usecase "จัดเก็บ ค้นหา และจัดการเอกสารทั้งหมดในระบบ" as ucsf003
+    usecase "เพิ่ม แก้ไข ลบ ข้อมูลสถานประกอบการ" as ucsf004
+    usecase "สร้างและเผยแพร่ข่าวประชาสัมพันธ์/ปฏิทินฝึกงาน" as ucsf005
+    usecase "ติดตามสถานะขั้นตอนการฝึกงานรายบุคคล" as ucsf006
+    usecase "รับ-ส่งความคิดเห็นกับอาจารย์และนักศึกษา" as ucsf007
+
+  ' กลุ่มกลุ่มอาจารย์ (Advisor/Teacher)
+    usecase "ดูรายชื่อและข้อมูลนักศึกษาในความรับผิดชอบ" as uct001
+    usecase "ติดตามสถานะขั้นตอนการฝึกงานของนักศึกษา" as uct002
+    usecase "ประเมินผลการฝึกงาน (ผ่าน/ไม่ผ่าน)" as uct003
+    usecase "จัดการข่าวประชาสัมพันธ์ (เพิ่ม/แก้ไข/ลบ)" as uct004
+    usecase "จัดการข้อมูลสถานประกอบการ (เพิ่ม/แก้ไข/ลบ)" as uct005
+    usecase "รับ-ส่งความคิดเห็นกับเจ้าหน้าที่และนักศึกษา" as uct006
+
+  ' กลุ่มสถานประกอบการ (Employer/Company)
+    usecase "ดูข้อมูลนักศึกษาที่ฝึกงานในหน่วยงานตนเอง" as ucc001
+    usecase "ประเมินผลการฝึกงานผ่านระบบ" as ucc002
+
+  ' กลุ่มผู้ดูแลระบบ (Admin)
+    usecase "จัดการบัญชีผู้ใช้งาน (เพิ่ม/แก้ไข/ลบ) ทุกระดับ" as uca001
+
+}
+
+' ความสัมพันธ์ของ Student
+Student -- ucs001
+Student -- ucs002
+Student -- ucs003
+Student -- ucs004
+Student -- ucs005
+Student -- ucs006
+Student -- ucs007
+Student -- ucs008
+Student -- ucs009
+
+' ความสัมพันธ์ของ Advisor
+Advisor -- uct001
+Advisor -- uct002
+Advisor -- uct003
+Advisor -- uct004
+Advisor -- uct005
+Advisor -- uct006
+
+' ความสัมพันธ์ของ Staff
+Staff -- ucsf001
+Staff -- ucsf002
+Staff -- ucsf003
+Staff -- ucsf004
+Staff -- ucsf005
+Staff -- ucsf006
+Staff -- ucsf007
+
+' ความสัมพันธ์ของ Company
+Company -- ucc001
+Company -- ucc002
+
+' ความสัมพันธ์ของ Admin
+Admin -- uca001 
+
+
+
+@enduml
