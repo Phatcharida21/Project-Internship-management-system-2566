@@ -1,23 +1,14 @@
-@startuml UseCaseDiagram_part_2
+@startuml UseCaseDiagram_part1-2
+
 skinparam defaultFontName "Tahoma"
 ' title "Use Case Diagram: ระบบการจัดการการฝึกงาน"
 skinparam nodesep 10
 skinparam ranksep 20
 left to right direction
 
-
-actor "เจ้าหน้าที่ฝ่ายงานบริการฯ" as Staff
 actor "อาจารย์ที่ปรึกษา" as Advisor
 
-
 rectangle "ระบบการจัดการการฝึกงาน" {
-
-  ' กลุ่มเจ้าหน้าที่ (Staff)
-    usecase "จัดการข้อมูลสถานประกอบการ" as ucsf003
-    usecase "จัดการข่าวประชาสัมพันธ์/ปฏิทินฝึกงาน" as ucsf004
-    usecase "ติดตามสถานะขั้นตอนการฝึกงานรายบุคคล" as ucsf005
-    usecase "จัดการความคิดเห็น" as ucsf006
-
   ' กลุ่มกลุ่มอาจารย์ (Advisor/Teacher)
     usecase "ดูรายชื่อและข้อมูลนักศึกษาในความรับผิดชอบ" as uct001
     usecase "ติดตามสถานะขั้นตอนการฝึกงานของนักศึกษา" as uct002
@@ -25,7 +16,6 @@ rectangle "ระบบการจัดการการฝึกงาน" {
     usecase "จัดการข่าวประชาสัมพันธ์" as uct004
     usecase "จัดการข้อมูลสถานประกอบการ" as uct005
     usecase "จัดการความคิดเห็น" as uct006
-
 
 }
 
@@ -37,12 +27,6 @@ Advisor -- uct004
 Advisor -- uct005
 Advisor -- uct006
 
-' ความสัมพันธ์ของ Staff
-Staff -- ucsf003
-Staff -- ucsf004
-Staff -- ucsf005
-Staff -- ucsf006
 
-' ความสัม
 
 @enduml

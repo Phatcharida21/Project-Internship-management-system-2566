@@ -1,7 +1,8 @@
 @startuml UseCaseDiagram_
 skinparam defaultFontName "Tahoma"
-title "Use Case Diagram: ระบบนำเข้าสินค้าไอที - นักศึกษา"
-
+' title "Use Case Diagram: ระบบนำเข้าสินค้าไอที - นักศึกษา"
+skinparam nodesep 10
+skinparam ranksep 20
 left to right direction
 
 actor "นักศึกษา" as Student
