@@ -1,0 +1,61 @@
+@startuml UseCaseDiagram_part_1
+
+skinparam defaultFontName "Tahoma"
+' title "Use Case Diagram: ระบบการจัดการการฝึกงาน"
+skinparam nodesep 10
+skinparam ranksep 20
+left to right direction
+
+actor "นักศึกษา" as Student
+actor "สถานประกอบการ" as Company
+actor "เจ้าหน้าที่ดูแลระบบ" as Admin
+actor "เจ้าหน้าที่ฝ่ายงานบริการฯ" as Staff
+
+rectangle "ระบบการจัดการการฝึกงาน" {
+  ' กลุ่มนักศึกษา (Student)
+    usecase "จัดการข้อมูลส่วนตัวนักศึกษา" as ucs001
+    usecase "ค้นหาข้อมูลสถานประกอบการในระบบ" as ucs002
+    usecase "เพิ่มข้อมูลสถานประกอบการ" as ucs003
+    usecase "แจ้งความประสงค์" as ucs004
+    usecase "อัปโหลดเอกสาร" as ucs005
+    usecase "ดาวน์โหลดเอกสารที่ระบบออกให้" as ucs006
+    usecase "ตรวจสอบสถานะการยื่นเรื่องของตนเอง" as ucs007
+    usecase "จัดการความคิดเห็น" as ucs008
+
+  ' กลุ่มสถานประกอบการ (Employer/Company)
+    usecase "ดูข้อมูลนักศึกษาที่ฝึกงานในหน่วยงานตนเอง" as ucc001
+    usecase "ประเมินผลการฝึกงาน" as ucc002
+
+  ' กลุ่มผู้ดูแลระบบ (Admin)
+    usecase "จัดการบัญชีผู้ใช้งาน" as uca001
+
+  ' กลุ่มเจ้าหน้าที่ (Staff)
+    usecase "ตรวจสอบพิจารณาคำร้อง" as ucsf001
+    usecase "จัดการเอกสารสำหรับนักศึกษา" as ucsf002
+
+
+}
+
+' ความสัมพันธ์ของ Student
+Student -- ucs001
+Student -- ucs002
+Student -- ucs003
+Student -- ucs004
+Student -- ucs005
+Student -- ucs006
+Student -- ucs007
+Student -- ucs008
+
+' ความสัมพันธ์ของ Company
+Company -- ucc001
+Company -- ucc002
+
+' ความสัมพันธ์ของ Admin
+Admin -- uca001
+
+' ความสัมพันธ์ของ Staff
+Staff -- ucsf001
+Staff -- ucsf002
+
+
+@enduml
